@@ -1,0 +1,23 @@
+services:
+ parse_them_all:
+  build:
+   context: .
+  image: parse_them_all:0.1
+  volumes:
+   - ./:/parse_them_all
+  ports:
+   - '8000:8000'
+  env_file: .env
+  command: 'python3 ./manage.py runserver 0.0.0.0:8000'
+
+ database:
+  image: postgres:17.5-alpine
+  environment:
+    - POSTGRES_DB=dbname
+    - POSTGRES_USER=dbuser
+    - POSTGRES_PASSWORD=pass
+  volumes:
+    - postgres_data:/var/lib/postgresql/data
+
+volumes:
+ postgres_data:
