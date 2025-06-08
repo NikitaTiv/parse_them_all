@@ -7,11 +7,13 @@ name = "pypi"
 django = "==5.2.1"
 pydantic-settings = "==2.9.1"
 psycopg2 = "==2.9.10"
-dj-database-url = "==3.0.0"
 pillow = "==11.2.1"
 djangorestframework = "==3.16.0"
 
 [dev-packages]
+factory-boy = "==3.3.3"
+freezegun = "==1.5.2"
+parameterized = "==0.9.0"
 
 [requires]
 python_version = "3.12"
