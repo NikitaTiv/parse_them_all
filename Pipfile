@@ -9,6 +9,7 @@ pydantic-settings = "==2.9.1"
 psycopg2 = "==2.9.10"
 pillow = "==11.2.1"
 djangorestframework = "==3.16.0"
+celery = {version = "==5.5.3", extras = ["librabbitmq"]}
 
 [dev-packages]
 factory-boy = "==3.3.3"

@@ -8,15 +8,29 @@ services:
   ports:
    - '8000:8000'
   command: 'python3 ./manage.py runserver 0.0.0.0:8000'
+  depends_on:
+   - database
+   - rabbitmq
+
+ worker1:
+  build:
+   context: .
+  volumes:
+   - ./:/parse_them_all
+  command: 'celery -A parse_them_all worker -l INFO'
+  depends_on:
+   - database
+   - rabbitmq
 
  database:
   image: postgres:17.5-alpine
-  environment:
-    - POSTGRES_DB=${POSTGRES_DB}
-    - POSTGRES_USER=${POSTGRES_USER}
-    - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  env_file:
+    - .env
   volumes:
     - postgres_data:/var/lib/postgresql/data
+
+ rabbitmq:
+  image: rabbitmq:4.1.1
 
 volumes:
  postgres_data:
