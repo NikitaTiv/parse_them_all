@@ -1,10 +1,9 @@
 services:
  parse_them_all:
   build:
-   context: .
-  image: parse_them_all:0.1
+   context: ./parse_them_all
   volumes:
-   - ./:/parse_them_all
+   - ./parse_them_all:/parse_them_all
   ports:
    - '8000:8000'
   command: 'python3 ./manage.py runserver 0.0.0.0:8000'
@@ -14,18 +13,23 @@ services:
 
  worker1:
   build:
-   context: .
+   context: ./parse_them_all
   volumes:
-   - ./:/parse_them_all
+   - ./parse_them_all:/parse_them_all
   command: 'celery -A parse_them_all worker -l INFO'
   depends_on:
    - database
    - rabbitmq
 
+ tesseract_api:
+  build:
+   context: ./tesseract_api
+  command: 'python3 api.py'
+
  database:
   image: postgres:17.5-alpine
   env_file:
-    - .env
+    - ./parse_them_all/.env
   volumes:
     - postgres_data:/var/lib/postgresql/data
 
