@@ -6,6 +6,9 @@ services:
    - ./parse_them_all:/parse_them_all
   ports:
    - '8000:8000'
+  networks:
+   - parse_db_network
+   - celery_network
   command: 'python3 ./manage.py runserver 0.0.0.0:8000'
   depends_on:
    - database
@@ -16,15 +19,22 @@ services:
    context: ./parse_them_all
   volumes:
    - ./parse_them_all:/parse_them_all
-  command: 'celery -A parse_them_all worker -l INFO'
+  networks:
+   - parse_db_network
+   - celery_network
+  command: 'celery -A parse_them_all worker -Q parse_queue -l INFO'
   depends_on:
    - database
    - rabbitmq
-
- tesseract_api:
+ 
+ tesseract-api:
   build:
    context: ./tesseract_api
-  command: 'python3 api.py'
+  command: 'python3 manage.py runserver 0.0.0.0:8001'
+  volumes:
+   - ./tesseract_api:/tesseract_api
+  networks:
+   - celery_network
 
  database:
   image: postgres:17.5-alpine
@@ -32,9 +42,17 @@ services:
     - ./parse_them_all/.env
   volumes:
     - postgres_data:/var/lib/postgresql/data
+  networks:
+   - parse_db_network
 
  rabbitmq:
   image: rabbitmq:4.1.1
+  networks:
+   - celery_network
 
 volumes:
  postgres_data:
+
+networks:
+ parse_db_network:
+ celery_network: 

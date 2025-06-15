@@ -10,6 +10,7 @@ psycopg2 = "==2.9.10"
 pillow = "==11.2.1"
 djangorestframework = "==3.16.0"
 celery = {version = "==5.5.3", extras = ["librabbitmq"]}
+requests = "==2.32.4"
 
 [dev-packages]
 factory-boy = "==3.3.3"
