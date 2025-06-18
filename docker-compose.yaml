@@ -1,5 +1,5 @@
 services:
- parse_them_all:
+ parse-them-all:
   build:
    context: ./parse_them_all
   volumes:
@@ -14,7 +14,7 @@ services:
    - database
    - rabbitmq
 
- worker1:
+ parse-worker:
   build:
    context: ./parse_them_all
   volumes:
@@ -35,6 +35,17 @@ services:
    - ./tesseract_api:/tesseract_api
   networks:
    - celery_network
+
+ tesseract-worker:
+  build:
+   context: ./tesseract_api
+  volumes:
+   - ./tesseract_api:/tesseract_api
+  networks:
+   - celery_network
+  command: 'celery -A tesseract_api worker -Q tessaract_queue -l INFO'
+  depends_on:
+   - rabbitmq
 
  database:
   image: postgres:17.5-alpine

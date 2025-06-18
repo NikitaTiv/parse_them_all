@@ -7,6 +7,7 @@ from image_parser.tasks import send_image_to_tessaract
 
 @receiver(post_save, sender=Image, dispatch_uid='post_save_image_signal')
 def post_save_image(sender, **kwargs):
+    instance = kwargs['instance']
     if kwargs['created'] is False:
         return
-    send_image_to_tessaract.delay()
+    send_image_to_tessaract.delay_on_commit(instance.request_id)

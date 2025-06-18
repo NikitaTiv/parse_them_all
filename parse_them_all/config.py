@@ -7,8 +7,8 @@ class Settings(BaseSettings):
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
     POSTGRES_HOST: str
-    POSTGRES_PORT: str = '5432'
-    TESSERACT_URL: str = 'http://tesseract-api:8001'
+    POSTGRES_PORT: str
+    TESSERACT_URL: str
 
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
