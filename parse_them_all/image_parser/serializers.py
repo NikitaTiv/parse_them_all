@@ -30,8 +30,9 @@ class UpdateContentSerializer(serializers.Serializer):
     status = serializers.ChoiceField(choices=('Success', 'Failed'))
     content = serializers.CharField(allow_blank=True)
 
-    def update(self, instance, validated_data):
-        instance.status = STATUS_SUCCESS if validated_data['status'] == 'Success' else STATUS_FAILED
-        instance.content = validated_data['content']
-        instance.save(update_fields=('status', 'content'))
+    def update(self, instance: ImageModel, validated_data):
+        if validated_data['status'] == 'Success':
+            instance.mark_image_as_successful(content=validated_data['content'])
+        else:
+            instance.mark_image_as_failed(error='Failed to handle the image by Tesseract.')
         return instance
