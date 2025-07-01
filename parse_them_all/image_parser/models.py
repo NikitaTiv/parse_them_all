@@ -32,5 +32,5 @@ class Image(models.Model):
         self.save(update_fields=('status', 'errors'))
 
     def mark_image_as_processing(self):
-        self.status = STATUS_FAILED
+        self.status = STATUS_PROCESSING
         self.save(update_fields=('status',))

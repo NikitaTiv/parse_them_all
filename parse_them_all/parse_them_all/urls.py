@@ -17,7 +17,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 
+from users.views import LoginUser, logout_user
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('parse-image/', include('image_parser.urls', namespace='image_handlers')),
+    path('login/', LoginUser.as_view(), name='login'),
+    path('logout/', logout_user, name='logout'),
 ]

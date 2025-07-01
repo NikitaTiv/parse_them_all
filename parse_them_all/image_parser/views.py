@@ -1,14 +1,15 @@
 from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
 
 from image_parser.serializers import ImageSerializer, UpdateContentSerializer
 from image_parser.models import Image
 
 
-class ImageCreateView(generics.CreateAPIView):
+class ImageView(generics.CreateAPIView, generics.UpdateAPIView):
     queryset = Image.objects
-    serializer_class = ImageSerializer
+    permission_classes = (IsAuthenticated,)
 
-
-class UpdateContentView(generics.UpdateAPIView):
-    queryset = Image.objects
-    serializer_class = UpdateContentSerializer
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return ImageSerializer
+        return UpdateContentSerializer

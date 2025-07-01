@@ -15,8 +15,8 @@ from image_parser.models import Image
 logger = logging.getLogger(__name__)
 
 
-@transaction.atomic
 @shared_task(bind=True, acks_late=True, ignore_result=True)
+@transaction.atomic
 def send_image_to_tessaract(self, instance_id: str) -> None:
     image_instance = Image.objects.select_for_update().get(pk=instance_id)
     image_obj = image_instance.image_object
