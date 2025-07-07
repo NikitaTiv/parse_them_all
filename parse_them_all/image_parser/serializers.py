@@ -1,15 +1,13 @@
-import logging
+from django.contrib.auth.models import User
 from PIL import Image, UnidentifiedImageError
 from rest_framework import serializers
 
 from image_parser.models import Image as ImageModel
-from image_parser.consts import STATUS_SUCCESS, STATUS_FAILED
-
-
-logger = logging.getLogger(__name__)
 
 
 class ImageSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), required=False)
+
     class Meta:
         model = ImageModel
         fields = ('request_id', 'user', 'image_object')
